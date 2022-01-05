@@ -25,8 +25,6 @@ import (
 	"os"
 	"os/exec"
 	"regexp"
-
-	"github.com/rs/zerolog/log"
 )
 
 // GetVersion returns the version of Go in the environment.
@@ -169,11 +167,6 @@ func executeGoCommand(args []string, options ...commandOption) error {
 	for _, option := range options {
 		option(cmd)
 	}
-
-	log.Debug().
-		Str("cmd", cmd.String()).
-		Str("dir", cmd.Dir).
-		Msg("executing command")
 
 	err := cmd.Run()
 	if err != nil {

@@ -28,7 +28,6 @@ import (
 
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/gocmd"
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/util"
-	"github.com/rs/zerolog/log"
 )
 
 // IsVendoring determines whether of not the module at moduleDir is vendoring its dependencies.
@@ -45,11 +44,6 @@ func GetVendoredModules(moduleDir string, includeTest bool) ([]Module, error) {
 	if !IsVendoring(moduleDir) {
 		return nil, ErrNotVendoring
 	}
-
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Bool("includeTest", includeTest).
-		Msg("loading vendored modules")
 
 	buf := new(bytes.Buffer)
 	err := gocmd.ListVendoredModules(moduleDir, buf)

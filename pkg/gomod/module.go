@@ -81,10 +81,6 @@ func IsModule(dir string) bool {
 var ErrNoModule = errors.New("not a go module")
 
 func LoadModule(moduleDir string) (*Module, error) {
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Msg("loading module")
-
 	buf := new(bytes.Buffer)
 	err := gocmd.ListModule(moduleDir, buf)
 	if err != nil {
@@ -101,11 +97,6 @@ func LoadModule(moduleDir string) (*Module, error) {
 }
 
 func LoadModules(moduleDir string, includeTest bool) ([]Module, error) {
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Bool("includeTest", includeTest).
-		Msg("loading modules")
-
 	if !IsModule(moduleDir) {
 		return nil, ErrNoModule
 	}
@@ -212,10 +203,6 @@ func ResolveLocalReplacements(mainModuleDir string, modules []Module) error {
 }
 
 func resolveLocalReplacement(localModuleDir string, module *Module) error {
-	log.Debug().
-		Str("moduleDir", localModuleDir).
-		Msg("resolving local replacement module")
-
 	localModule, err := LoadModule(localModuleDir)
 	if err != nil {
 		return err

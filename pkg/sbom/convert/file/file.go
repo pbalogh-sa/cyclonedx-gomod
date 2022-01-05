@@ -22,7 +22,6 @@ import (
 
 	cdx "github.com/CycloneDX/cyclonedx-go"
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/sbom"
-	"github.com/rs/zerolog/log"
 )
 
 type Option func(absFilePath, relFilePath string, c *cdx.Component) error
@@ -40,10 +39,6 @@ func WithHashes(algos ...cdx.HashAlgorithm) Option {
 }
 
 func ToComponent(absFilePath, relFilePath string, options ...Option) (*cdx.Component, error) {
-	log.Debug().
-		Str("file", absFilePath).
-		Msg("converting file to component")
-
 	component := cdx.Component{
 		Type:  cdx.ComponentTypeFile,
 		Name:  relFilePath,

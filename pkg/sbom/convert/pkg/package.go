@@ -24,7 +24,6 @@ import (
 	cdx "github.com/CycloneDX/cyclonedx-go"
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/gomod"
 	fileConv "github.com/CycloneDX/cyclonedx-gomod/pkg/sbom/convert/file"
-	"github.com/rs/zerolog/log"
 )
 
 type Option func(gomod.Package, gomod.Module, *cdx.Component) error
@@ -79,10 +78,6 @@ func WithFiles(enabled bool) Option {
 }
 
 func ToComponent(p gomod.Package, m gomod.Module, options ...Option) (*cdx.Component, error) {
-	log.Debug().
-		Str("package", p.ImportPath).
-		Msg("converting package to component")
-
 	component := cdx.Component{
 		Type:       cdx.ComponentTypeLibrary,
 		Name:       p.ImportPath,

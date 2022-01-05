@@ -28,7 +28,6 @@ import (
 	"strings"
 
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/gocmd"
-	"github.com/rs/zerolog/log"
 )
 
 // See https://golang.org/cmd/go/#hdr-List_packages_or_modules
@@ -64,11 +63,6 @@ func (pe PackageError) Error() string {
 }
 
 func LoadPackage(moduleDir, packagePattern string) (*Package, error) {
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Str("packagePattern", packagePattern).
-		Msg("loading package")
-
 	buf := new(bytes.Buffer)
 	err := gocmd.ListPackage(moduleDir, toRelativePackagePath(packagePattern), buf)
 	if err != nil {
@@ -89,10 +83,6 @@ func LoadPackage(moduleDir, packagePattern string) (*Package, error) {
 }
 
 func LoadModulesFromPackages(moduleDir, packagePattern string) ([]Module, error) {
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Msg("loading modules")
-
 	if !IsModule(moduleDir) {
 		return nil, ErrNoModule
 	}
@@ -147,10 +137,6 @@ func parsePackages(reader io.Reader) (map[string][]Package, error) {
 		if pkg.Standard {
 			coordinates = StdlibModulePath
 		} else if pkg.Module == nil {
-			log.Debug().
-				Str("package", pkg.ImportPath).
-				Str("reason", "no associated module").
-				Msg("skipping package")
 			continue
 		} else {
 			coordinates = pkg.Module.Coordinates()

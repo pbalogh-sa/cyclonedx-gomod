@@ -26,7 +26,6 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/mod/module"
 	"golang.org/x/mod/semver"
 )
@@ -37,10 +36,6 @@ import (
 // upwards until the root directory is reached. This is done to accommodate
 // for multi-module repositories, where modules are not placed in the repo root.
 func GetModuleVersion(moduleDir string) (string, error) {
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Msg("detecting module version")
-
 	repoDir, err := filepath.Abs(moduleDir)
 	if err != nil {
 		return "", err
@@ -113,10 +108,6 @@ type tag struct {
 // GetLatestTag determines the latest tag relative to HEAD.
 // Only tags with valid semver are considered.
 func GetLatestTag(repo *git.Repository, headCommit *object.Commit) (*tag, error) {
-	log.Debug().
-		Str("headCommit", headCommit.Hash.String()).
-		Msg("getting latest tag for head commit")
-
 	tagRefs, err := repo.Tags()
 	if err != nil {
 		return nil, err
@@ -145,12 +136,6 @@ func GetLatestTag(repo *git.Repository, headCommit *object.Commit) (*tag, error)
 				latestTag.name = ref.Name().Short()
 				latestTag.commit = commit
 			}
-		} else {
-			log.Debug().
-				Str("tag", ref.Name().Short()).
-				Str("hash", ref.Hash().String()).
-				Str("reason", "not a valid semver").
-				Msg("skipping tag")
 		}
 
 		return nil

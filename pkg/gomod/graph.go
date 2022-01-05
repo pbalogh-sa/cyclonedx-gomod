@@ -26,16 +26,10 @@ import (
 	"strings"
 
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/gocmd"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/mod/semver"
 )
 
 func ApplyModuleGraph(moduleDir string, modules []Module) error {
-	log.Debug().
-		Str("moduleDir", moduleDir).
-		Int("moduleCount", len(modules)).
-		Msg("applying module graph")
-
 	buf := new(bytes.Buffer)
 	err := gocmd.GetModuleGraph(moduleDir, buf)
 	if err != nil {
@@ -84,20 +78,10 @@ func parseModuleGraph(reader io.Reader, modules []Module) error {
 		// the effective modules slice. Hence, we search for the dependency in non-strict mode.
 		dependency := findModule(modules, fields[1], false)
 		if dependency == nil {
-			log.Debug().
-				Str("dependant", dependant.Coordinates()).
-				Str("dependency", fields[1]).
-				Str("reason", "dependency not in list of selected modules").
-				Msg("skipping graph edge")
 			continue
 		}
 
 		if dependant.Main && dependency.Indirect {
-			log.Debug().
-				Str("dependant", dependant.Coordinates()).
-				Str("dependency", dependency.Coordinates()).
-				Str("reason", "indirect dependency").
-				Msg("skipping graph edge")
 			continue
 		}
 

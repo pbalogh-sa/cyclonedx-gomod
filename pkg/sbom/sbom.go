@@ -31,7 +31,6 @@ import (
 	cdx "github.com/CycloneDX/cyclonedx-go"
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/gomod"
 	"github.com/CycloneDX/cyclonedx-gomod/pkg/version"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -125,11 +124,6 @@ func CalculateFileHashes(filePath string, algos ...cdx.HashAlgorithm) ([]cdx.Has
 	if len(algos) == 0 {
 		return make([]cdx.Hash, 0), nil
 	}
-
-	log.Debug().
-		Str("file", filePath).
-		Interface("algos", algos).
-		Msg("calculating file hashes")
 
 	hashMap := make(map[cdx.HashAlgorithm]hash.Hash)
 	hashWriters := make([]io.Writer, 0)
